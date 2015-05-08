@@ -15,11 +15,13 @@ with open("/usr/share/dict/words") as sample:
 
 
 ######################################
-#       """ GAME INTERACTION """
+#       """ GAME_WELCOME """
 
 def welcome():
     print("Welcome to Mystery Word!")
-welcome()
+
+######################################
+#       """ CHOOSE_LEVEL """
 
 def choose_level():
     print("Choose your level. Enter [E] for Easy, [M] for Medium, [H] for Hard.")
@@ -30,11 +32,12 @@ def choose_level():
         if letter not in 'emh' :
             print('You entered the wrong letter, try again!')
             choose_level()
+        if letter == 'h':
+            print("You will get as many guesses as letters in word.")
+            return level
         else:
             print("You will get 8 letter-guesses to find out what word is given. Good Luck!")
             return level
-
-level = choose_level()
 
 ######################################
 #            """ EASY_MODE """
@@ -64,7 +67,6 @@ def medium_words(words):
     return medium_mode_words
 
 ######################################
-
 #            """ HARD_MODE """
 """ Evaluate if word has 8 or more letters """
 
@@ -77,7 +79,7 @@ def hard_words(words):
     return hard_mode_words
 
 ######################################
-#            """ RUN_GAME """
+#            """ GO_TO_LEVEL """
 
 def level_word_list(level,dict_list):
     if level == 'e':
@@ -87,16 +89,12 @@ def level_word_list(level,dict_list):
     else:
         return hard_words(dict_list)
 
-list_from_level = level_word_list(level,words_dict_list)
-
 ######################################
 #            """ RANDOM_WORD """
 def random_word(words):
     random_word = random.choice(words)
     return random_word
 
-the_word = random_word(list_from_level)
-print(the_word)
 ######################################
 
 #            """ DISPLAY_WORD """
@@ -172,9 +170,16 @@ def guesses(word):
                 else:
                     pass
 
+
+######################################
+#       RUN_GAME
+welcome()
+level = choose_level()
+list_from_level = level_word_list(level,words_dict_list)
+the_word = random_word(list_from_level)
+print(the_word)
 guessed_letters = guesses(the_word)
 
 ######################################
-
 if __name__ == "__main__":
     pass
