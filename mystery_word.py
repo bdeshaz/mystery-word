@@ -28,16 +28,14 @@ def choose_level():
 
     level = input('> ').lower()
 
-    for letter in level:
-        if letter not in 'emh' :
-            print('You entered the wrong letter, try again!')
-            choose_level()
-        if letter == 'h':
-            print("You will get as many guesses as letters in word.")
-            return level
-        else:
-            print("You will get 8 letter-guesses to find out what word is given. Good Luck!")
-            return level
+    if level not in 'emh' :
+        print('You entered the wrong letter, try again!')
+        choose_level()
+    elif len(level) > 1:
+        print('You tried to many characters, try again!')
+    else:
+        print("You will get 8 letter-guesses to find out what word is given. Good Luck!")
+        return level
 
 ######################################
 #            """ EASY_MODE """
@@ -126,20 +124,26 @@ def is_word_complete(word, guessed_letters):
 #            """ GUESSES """
 def guesses(word):
 
-
+    guess_counter = 8
     guessed_letters = []
 
-    if len(word) < 9:
+    while guess_counter > 0:
+        guess = input("Guess a letter: ").lower()
 
-        while len(guessed_letters) < 9:
-            guess = input("Guess a letter: ").lower()
-
-            if len(guess) > 1:
-                print("You typed too many letters, try again")
-            elif not guess.isalpha():
-                print("You typed something weird, type letters, try again")
-            elif guess in guessed_letters:
-                print("You guessed that letter already! Try again")
+        if len(guess) > 1:
+            print("You typed too many letters, try again")
+        elif not guess.isalpha():
+            print("You typed something weird, type letters, try again")
+        elif guess in guessed_letters:
+            print("You guessed that letter already! Try again")
+        else:
+            if guess not in word:
+                guess_counter -= 1
+                guessed_letters.append(guess)
+                display_word(word, guessed_letters)
+                print("That's not a letter :( ")
+                print("Number of guesses left: {}".format(guess_counter))
+                print("Guessed letters: {}".format(', '.join(guessed_letters).upper()))
             else:
                 guessed_letters.append(guess)
                 display_word(word, guessed_letters)
@@ -149,36 +153,36 @@ def guesses(word):
                     return
                 else:
                     pass
-    else:
-
-        while len(guessed_letters) <= len(word):
-            guess = input("Guess a letter: ").lower()
-
-            if len(guess) > 1:
-                print("You typed too many letters, try again")
-            elif not guess.isalpha():
-                print("You typed something weird, type letters, try again")
-            elif guess in guessed_letters:
-                print("You guessed that letter already! Try again")
-            else:
-                guessed_letters.append(guess)
-                display_word(word, guessed_letters)
-
-                if is_word_complete(word, guessed_letters) == True:
-                    print("You win! The word was {}.".format(word.title()))
-                    return
-                else:
-                    pass
-
+    print("You ran out of guesses! Play Again!"
+    "The word was {}".format(word))
 
 ######################################
 #       RUN_GAME
-welcome()
-level = choose_level()
-list_from_level = level_word_list(level,words_dict_list)
-the_word = random_word(list_from_level)
-print(the_word)
-guessed_letters = guesses(the_word)
+
+def run_game():
+    welcome()
+    level = choose_level()
+    list_from_level = level_word_list(level,words_dict_list)
+    the_word = random_word(list_from_level)
+    guessed_letters = guesses(the_word)
+    play_again()
+
+######################################
+#       PLAY_AGAIN
+
+def play_again():
+
+    play_again_answer = input("""Do you want to play again? [Y] fo Yes,
+                                [N] for No. >  """).lower()
+    if play_again_answer == 'y':
+        run_game()
+    else:
+        print("Goodbye!")
+        return
+
+######################################
+
+run_game()
 
 ######################################
 if __name__ == "__main__":
