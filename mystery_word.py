@@ -113,9 +113,7 @@ def display_word(word, guessed_letters):
 def is_word_complete(word, guessed_letters):
 
     for letter in word:
-        if letter in guessed_letters:
-            pass
-        else:
+        if letter not in guessed_letters:
             return False
     return True
 
@@ -148,7 +146,7 @@ def guesses(word):
                 guessed_letters.append(guess)
                 display_word(word, guessed_letters)
 
-                if is_word_complete(word, guessed_letters) == True:
+                if is_word_complete(word, guessed_letters):
                     print("You win! The word was {}.".format(word.title()))
                     return
                 else:
