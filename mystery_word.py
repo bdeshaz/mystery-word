@@ -1,5 +1,6 @@
 import random
 import re
+import os
 
 
 ######################################
@@ -81,10 +82,13 @@ def hard_words(words):
 
 def level_word_list(level,dict_list):
     if level == 'e':
+        print("Welcome to EASY mode")
         return easy_words(dict_list)
     if level == 'm':
+        print("Welcome to MEDIUM mode")
         return medium_words(dict_list)
     else:
+        print("Welcome to HARD mode")
         return hard_words(dict_list)
 
 ######################################
@@ -114,45 +118,59 @@ def is_word_complete(word, guessed_letters):
 
     for letter in word:
         if letter not in guessed_letters:
-            return False
+            return
     return True
 
 ######################################
 
+#            """ GUESS_INPUT """
+def guess_input(word, guessed_letters):
+
+    guess = input("Guess a letter: ").lower()
+
+    if len(guess) > 1:
+        print("You typed too many letters, try again")
+        guess_input(word)
+    elif not guess.isalpha():
+        print("You typed something weird, type letters, try again")
+        guess_input(word)
+    elif guess in guessed_letters:
+        print("You guessed that letter already! Try again")
+        guess_input(word)
+
+    os.system('clear')
+    guessed_letters.append(guess)
+    display_word(word, guessed_letters)
+
+    return guess
+
+######################################
 #            """ GUESSES """
-def guesses(word):
+def the_game(word):
 
     guess_counter = 8
     guessed_letters = []
 
     while guess_counter > 0:
-        guess = input("Guess a letter: ").lower()
+        guess = guess_input(word, guessed_letters)
+        print("Guessed letters: {}".format(', '.join(guessed_letters).upper()))
 
-        if len(guess) > 1:
-            print("You typed too many letters, try again")
-        elif not guess.isalpha():
-            print("You typed something weird, type letters, try again")
-        elif guess in guessed_letters:
-            print("You guessed that letter already! Try again")
+        if guess not in word:
+            guess_counter -= 1
+            print("That's not a letter :( ")
+            print('')
+            print("Number of guesses left: {}".format(guess_counter))
         else:
-            if guess not in word:
-                guess_counter -= 1
-                guessed_letters.append(guess)
-                display_word(word, guessed_letters)
-                print("That's not a letter :( ")
-                print("Number of guesses left: {}".format(guess_counter))
-                print("Guessed letters: {}".format(', '.join(guessed_letters).upper()))
-            else:
-                guessed_letters.append(guess)
-                display_word(word, guessed_letters)
+            print("That's a letter!")
+            print('')
+            print("Number of guesses left: {}".format(guess_counter))
 
-                if is_word_complete(word, guessed_letters):
-                    print("You win! The word was {}.".format(word.title()))
-                    return
-                else:
-                    pass
+        if is_word_complete(word, guessed_letters):
+            print("You win! The word was {}.".format(word.upper()))
+            return
+
     print("You ran out of guesses! Play Again!"
-    "The word was {}".format(word))
+    "The word was {}".format(word.upper()))
 
 ######################################
 #       RUN_GAME
@@ -162,7 +180,7 @@ def run_game():
     level = choose_level()
     list_from_level = level_word_list(level,words_dict_list)
     the_word = random_word(list_from_level)
-    guessed_letters = guesses(the_word)
+    the_game(the_word)
     play_again()
 
 ######################################
@@ -170,8 +188,7 @@ def run_game():
 
 def play_again():
 
-    play_again_answer = input("""Do you want to play again? [Y] fo Yes,
-                                [N] for No. >  """).lower()
+    play_again_answer = input("""Do you want to play again? [Y] fo Yes, [N] for No. >  """).lower()
     if play_again_answer == 'y':
         run_game()
     else:
