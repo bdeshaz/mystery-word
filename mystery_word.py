@@ -5,6 +5,8 @@ import os
 
 ######################################
 #           """ Dictionary Import """
+# imports dictionary from computer and breaks
+# it into a list to be used in game
 
 with open("/usr/share/dict/words") as sample:
     words_dict = sample.read()
@@ -23,6 +25,9 @@ def welcome():
 
 ######################################
 #       """ CHOOSE_LEVEL """
+# Allows the user to choose a level where
+# the difficulty is based on the length of
+# the word
 
 def choose_level():
     print("Choose your level. Enter [E] for Easy, [M] for Medium, [H] for Hard.")
@@ -79,6 +84,8 @@ def hard_words(words):
 
 ######################################
 #            """ GO_TO_LEVEL """
+# Takes the input from the user and
+# starts the level chosen
 
 def level_word_list(level,dict_list):
     if level == 'e':
@@ -93,13 +100,19 @@ def level_word_list(level,dict_list):
 
 ######################################
 #            """ RANDOM_WORD """
+# Chooses a random word from the level
+# the user chose
+
 def random_word(words):
     random_word = random.choice(words)
     return random_word
 
 ######################################
-
 #            """ DISPLAY_WORD """
+# Displays the letters in the word if
+# the letter guessed is in the word from
+# Random Word function
+
 def display_word(word, guessed_letters):
 
     display = ""
@@ -112,8 +125,9 @@ def display_word(word, guessed_letters):
     print(display[:-1])
 
 ######################################
-
 #            """ IS_WORD_COMPLETE """
+# Checks to see if word is complete
+
 def is_word_complete(word, guessed_letters):
 
     for letter in word:
@@ -122,8 +136,11 @@ def is_word_complete(word, guessed_letters):
     return True
 
 ######################################
-
 #            """ GUESS_INPUT """
+# Checks the input given from user and
+# adds the guess to a list. Gives feedback
+# if user didn't follow rule. Clears screen
+
 def guess_input(word, guessed_letters):
 
     guess = input("Guess a letter: ").lower()
@@ -146,6 +163,10 @@ def guess_input(word, guessed_letters):
 
 ######################################
 #            """ GUESSES """
+# Keeps count of the guesses and keeps
+# the list of guesses. Determines if
+# user wins or not
+
 def the_game(word):
 
     guess_counter = 8
@@ -185,6 +206,7 @@ def run_game():
 
 ######################################
 #       PLAY_AGAIN
+# Allows the user to play again
 
 def play_again():
 
