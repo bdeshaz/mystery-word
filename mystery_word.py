@@ -7,15 +7,15 @@ import os
 #           """ Dictionary Import """
 # imports dictionary from computer and breaks
 # it into a list to be used in game
-
-with open("/usr/share/dict/words") as sample:
-    words_dict = sample.read()
+def dict_to_list():
+    with open("/usr/share/dict/words") as sample:
+        words_dict = sample.read()
     words_dict = words_dict.split()
     lowered_words_dict = []
     for word in words_dict:
         lowered_words_dict.append(word.lower())
     words_dict_list = lowered_words_dict
-
+    return words_dict_list
 
 ######################################
 #       """ GAME_WELCOME """
@@ -199,6 +199,7 @@ def the_game(word):
 def run_game():
     welcome()
     level = choose_level()
+    words_dict_list = dict_to_list()
     list_from_level = level_word_list(level,words_dict_list)
     the_word = random_word(list_from_level)
     the_game(the_word)
